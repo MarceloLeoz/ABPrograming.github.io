@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <link rel="stylesheet" type="text/css" href="styles.css"
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Atlets Registration</title>
+    <style>
+
+        body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        }
+        .container {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 500px;
+        } 
+
+        h1 { color: #2c3e50; text-align: center; }
+        .form-group 
+        { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #667; }
+
+        input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+       border-radius: 5px;
+        box-sizing: border-box;
+        }
+
+        .buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 20px;
+        }
+
+        button {
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+        }
+
+        .btn-register { background-color: #4a9f6d; color: white; }
+        .btn-list { background-color: #1982c8; color: white; }
+        .btn-total { background-color: #ff0303; color: white; grid-column: span 2; }
+        button:hover { opacity: 0.8; }
+
+        #output {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f9f9f9;
+        border-left: 5px solid #2980b9;
+        min-height: 50px;
+        white-space: pre-wrap;
+           }
+
+      </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>SPORTS REGISTRATION</h1>
+    
+    <div class="form-group">
+        <label>Name of the athlete:</label>
+        <input type="text" id="name" placeholder="Ex: Ruan ">
+    </div>
+    <div class="form-group">
+        <label>Age:</label>
+        <input type="number" id="age" placeholder="Ex: 25">
+    </div>
+    <div class="form-group">
+        <label>Sport:</label>
+        <input type="text" id="sport" placeholder="Ex: Futebol">
+    </div>
+    <div class="form-group">
+        <label>Monthly Fee (€):</label>
+        <input type="number" id="fee" step="0.01" placeholder="Ex: 50.00">
+    </div>
+
+    <div class="buttons">
+        <button class="btn-register" onclick="registerAthlete()">Register Athlete</button>
+        <button class="btn-list" onclick="showList()">Show Athlete List</button>
+        <button class="btn-total" onclick="calculateTotal()">Calculate Total Profit</button>
+    </div>
+
+    <div id="output">The results will appear here....</div>
+</div>
+
+<script>
+    // Lista para armazenar os atletas (o equivalente ao athlete_list do Python)
+    let athleteList = [];
+
+    function registerAthlete() {
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const sport = document.getElementById('sport').value;
+        const fee = parseFloat(document.getElementById('fee').value);
+
+        if (name && age && sport && !isNaN(fee)) {
+            const athlete = {
+                name: name,
+                age: age,
+                sport: sport,
+                fee: fee
+            };
+            
+            athleteList.push(athlete);
+            document.getElementById('output').innerHTML = "Athlete successfully registered!";
+            
+            // Limpar campos
+            document.getElementById('name').value = "";
+            document.getElementById('age').value = "";
+            document.getElementById('sport').value = "";
+            document.getElementById('fee').value = "";
+        } else {
+            alert("Please fill all fields correctly.");
+        }
+    }
+
+    function showList() {
+        const output = document.getElementById('output');
+        if (athleteList.length === 0) {
+            output.innerHTML = "There is no athlete registered yet.";
+        } else {
+            let listText = "--- ATHLETES LIST ---\n";
+            athleteList.forEach((d) => {
+                listText += `Name: ${d.name}, Age: ${d.age}, Sport: ${d.sport}, Fee: €${d.fee.toFixed(2)}\n`;
+            });
+            output.innerHTML = listText;
+        }
+    }
+
+    function calculateTotal() {
+        const total = athleteList.reduce((sum, d) => sum + d.fee, 0);
+        document.getElementById('output').innerHTML = ` Total profit: €${total.toFixed(2)}`;
+    }
+</script>
+
+</body>
+</html>
